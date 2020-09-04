@@ -1,0 +1,7 @@
+{
+  "name": "radeclaPhone",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
