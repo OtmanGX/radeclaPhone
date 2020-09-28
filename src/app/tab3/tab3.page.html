@@ -1,17 +1,36 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
+      <ion-title size="large">Mes Réservations</ion-title>
     </ion-toolbar>
   </ion-header>
+    <ion-list>
+      <ion-card *ngFor="let res of (reservations$ | async)">
+        <ion-card-header>
+          <ion-text color="medium">
+            <ion-icon name="calendar"></ion-icon>
+            {{res.start_date | date: 'short':'':'fr'}}
+          </ion-text>
+        </ion-card-header>
+        <ion-card-content>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+        <ion-label>
+          <ion-avatar style="display: inline; vertical-align: middle">
+          <ion-icon style="vertical-align: middle" name="tennisball" color="warning" size="large">
+          </ion-icon>
+        </ion-avatar>
+          <ion-text id="players">Contre: {{res.players[1].nom}}</ion-text>
+        </ion-label><br>
+          <ion-button class="ion-float-right" (click)="deleteReservation(res.id)" fill="clear" color="danger" size="small">
+            <ion-icon size="small" name="trash"></ion-icon>
+          </ion-button>
+          <ion-button class="ion-float-right" (click)="editReservation(res.id)" fill="clear" color="warning" size="small">
+            <ion-icon size="small" name="create"></ion-icon>
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
 </ion-content>

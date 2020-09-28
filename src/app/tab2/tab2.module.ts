@@ -7,15 +7,20 @@ import { Tab2Page } from './tab2.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
 import { Tab2PageRoutingModule } from './tab2-routing.module';
+import {ComponentsModule} from '../components.module';
+import {DayViewSchedulerComponent} from '../day-view-scheduler/day-view-scheduler.component';
+import {CalendarModule} from 'angular-calendar';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ExploreContainerComponentModule,
-    Tab2PageRoutingModule
-  ],
-  declarations: [Tab2Page]
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        ComponentsModule,
+        ExploreContainerComponentModule,
+        Tab2PageRoutingModule,
+        CalendarModule,
+    ],
+    declarations: [Tab2Page, DayViewSchedulerComponent]
 })
 export class Tab2PageModule {}

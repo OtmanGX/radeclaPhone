@@ -1,0 +1,65 @@
+
+<app-header></app-header>
+<ion-content [fullscreen]="true">
+
+  <ng-form #f="ngForm" (ngSubmit)="submit(f.value)" ngNativeValidate>
+    <ion-list>
+      <ion-list-header>
+        <ion-label color="tertiary" >
+          <h2 style="font-weight: bold">{{title}} Réservation</h2>
+        </ion-label>
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label>Terrain</ion-label>
+        <ion-select name="terrain" [(ngModel)]="reservation.terrain" placeholder="Sélectionner">
+          <ion-select-option *ngFor="let num of [1, 2, 3, 4, 5, 6, 7, 9, 10]" [value]="num">{{num}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-radio-group name="type_match" [(ngModel)]="reservation.type_match">
+
+        <ion-item>
+          <ion-label>Entrainement</ion-label>
+          <ion-radio slot="start" value="E"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Match</ion-label>
+          <ion-radio slot="start" value="M"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+
+      <ion-item>
+        <ion-label>L'autre joueur</ion-label>
+        <ionic-selectable
+                name="players"
+                [(ngModel)]="reservation.players"
+                required
+                item-content
+                [items]="membres"
+                closeButtonText="Annuler"
+                searchPlaceholder="Cherche"
+                itemValueField="id"
+                itemTextField="nom"
+                [canSearch]="true"
+                (onChange)="memberChange($event)"
+        >
+        </ionic-selectable>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button *ngIf="!reservation.id; else edit">
+        <ion-icon name="add" (click)="f.valid && f.ngSubmit.emit()"></ion-icon>
+      </ion-fab-button>
+      <ng-template #edit>
+        <ion-fab-button color="tertiary">
+          <ion-icon name="checkmark" (click)="f.valid && f.ngSubmit.emit()"></ion-icon>
+        </ion-fab-button>
+      </ng-template>
+    </ion-fab>
+
+  </ng-form>
+</ion-content>

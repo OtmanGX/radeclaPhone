@@ -1,17 +1,63 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Tab 2
+      Radecla
     </ion-title>
+    <ion-buttons slot="end">
+
+      <ion-button (click)="fetchData()">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+      <ion-button (click)="openDatePicker()">
+        <ion-icon name="calendar"></ion-icon>
+      </ion-button>
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
+      <ion-title size="large">{{title}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <div *ngIf="events$ | async; let events" style="margin-top: 10px;">
+    <app-day-view-scheduler
+            [viewDate]="viewDate"
+            [events]="events"
+            [locale]="locale"
+            [terrains]="terrains"
+            [hourSegmentHeight]="25"
+            dayStartHour="8"
+            [hourSegments]="1"
+            (hourSegmentClicked)="hourSegmentClicked($event)"
+            (userChanged)="userChanged($event)"
+    >
+
+    </app-day-view-scheduler>
+  </div>
+<!--  <ion-list>-->
+
+<!--    <ion-item *ngFor="let res of (events$ | async)">-->
+<!--      <ion-avatar>-->
+<!--        <ion-icon name="tennisball" size="large">-->
+<!--        </ion-icon>-->
+<!--      </ion-avatar>-->
+<!--      <ion-text slot="end" color="medium">-->
+<!--        <ion-icon name="calendar"></ion-icon>-->
+<!--        {{res.start_date | date: 'shortTime':'':'fr'}} - -->
+<!--        {{res.end_date| date:'shortTime':'':'fr'}}</ion-text>-->
+<!--      <ion-label>-->
+<!--        <br>-->
+<!--        <ion-text color="primary">{{res.membre1.nom}}</ion-text><br>-->
+<!--        <ion-text color="tertiary">{{res.membre3.nom}}</ion-text> <br>-->
+
+<!--      </ion-label>-->
+
+<!--    </ion-item>-->
+<!--  </ion-list>-->
 </ion-content>

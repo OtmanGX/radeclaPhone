@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">radeclaPhone</string>
+    <string name="title_activity_main">radeclaPhone</string>
+    <string name="package_name">io.gx.mg</string>
+    <string name="custom_url_scheme">io.gx.mg</string>
+</resources>

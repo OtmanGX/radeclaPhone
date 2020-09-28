@@ -1,0 +1,17 @@
+<ion-content>
+
+	<ion-card>
+		<ion-card-content>
+		<ion-list>
+		  <ion-item>
+			<ion-label> <ion-icon name="mail-outline"></ion-icon></ion-label>
+			<ion-input placeholder="Email" [(ngModel)]="email" type="email"></ion-input>
+		  </ion-item>
+
+		  <div class="btn-center-align">
+		  	<ion-button color="primary" shape="round" (click)="onSubmit()">Submit </ion-button> <br>
+		  </div>
+		</ion-list>
+	</ion-card-content>
+	</ion-card>
+</ion-content>

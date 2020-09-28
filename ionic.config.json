@@ -1,7 +1,8 @@
 {
   "name": "radeclaPhone",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

@@ -1,0 +1,72 @@
+div.cal-day-headers {
+  background-color: rgb(255,215,0);
+}
+div.cal-header {
+  background-color: rgb(255,215,0);
+}
+
+div.cal-hour-segment {
+  background-color: aqua;
+}
+
+.cal-hour-odd {
+  background-color: rgb(107, 142, 35);
+}
+
+ .cal-hour-pair {
+   background-color: #8ae234;
+ }
+
+.cal-week-view .cal-event {
+  color: wheat;
+  text-align: center;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font-size: 10px;
+  font-weight: bolder;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  line-height: 1.3;
+}
+
+.cal-event-training {
+  background-color: #503D42;
+}
+
+.cal-event-match {
+  background-color: blue
+}
+
+.cal-header, .cal-hour{
+  font-size: 0.7em;
+}
+
+cal-day-headers {
+  font-size: 0.8em;
+}
+
+.cal-day-headers {
+  padding-left: 35px;
+}
+
+.cal-time-label-column {
+  width: 35px;
+}
+
+mwl-calendar-week-view-hour-segment .cal-time {
+  max-width: 35px;
+}
+
+
+/*.cal-cell-row {*/
+/*  height: 100%;*/
+/*}*/
+/*.cal-weekend {*/
+/*  background-color: red;*/
+/*}*/
+/*.ng-star-inserted {*/
+/*  height: 51px;*/
+/*}*/
+/*.cal-cell .cal-day-cell {*/
+/*  height: 100%;*/
+/*}*/

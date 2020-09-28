@@ -1,0 +1,33 @@
+ion-content {
+	--background: url(../../../assets/009 Nightsky.jpg) no-repeat center center / cover;
+}
+
+ion-content>ion-list,ion-card {
+	position: relative;
+	top : 30%;
+}
+
+.btn-center-align {
+	text-align: center!important;
+}
+.btn-center-align ion-button {
+	--color: white;
+}
+.btn-center-align ion-button:hover {
+	--color: black;
+}
+
+ion-item {
+	--background: transparent;
+	color : white;
+	--min-height: 40px;
+}
+
+ion-list, ion-card {
+	/*background: transparent;*/
+	
+}
+
+:host {
+	--min-height: 39px;
+}
