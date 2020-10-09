@@ -15,6 +15,16 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar
   ) {
+    // Use matchMedia to check the user preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: light)');
+
+    toggleDarkTheme(prefersDark.matches);
+
+    // Add or remove the "dark" class based on if the media query matches
+    function toggleDarkTheme(shouldAdd) {
+      document.body.classList.toggle('light', shouldAdd);
+    }
+
     this.initializeApp();
   }
 

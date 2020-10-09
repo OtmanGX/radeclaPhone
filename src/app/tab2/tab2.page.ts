@@ -7,14 +7,9 @@ import {
     addHours,
     isAfter,
     endOfDay,
-    endOfMonth,
-    isSameDay,
-    isSameMonth,
     startOfDay,
-    startOfMonth,
     addMinutes,
     subMinutes,
-    endOfHour
 } from 'date-fns';
 import {ReservationData} from '../models/reservation-data';
 import {ReservationService} from '../services/reservation.service';
@@ -24,6 +19,7 @@ import {map} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {APIService} from '../services/api.service';
 import {AuthService} from '../services/auth.service';
+import {DatePipe} from '@angular/common';
 
 
 const DatePicker: DatePickerPluginInterface = Plugins.DatePickerPlugin as any;
@@ -103,13 +99,15 @@ const TERRAINS: Terrain[] = [
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss']
+  styleUrls: ['tab2.page.scss'],
+    providers: [DatePipe]
 })
 export class Tab2Page implements OnInit{
     locale = 'fr';
     terrains = TERRAINS;
-    // refresh: Subject<any> = new Subject();
+    refresh: Subject<any> = new Subject();
   title = TITLE;
+  today = new Date();
   viewDate: Date = new Date();
   private params: { end_date: string; start_date: string };
   events$: Observable<ReservationData[]>;
@@ -118,21 +116,22 @@ export class Tab2Page implements OnInit{
   constructor(private service: ReservationService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private authService: AuthService) {
+              private authService: AuthService,
+              public datepipe: DatePipe) {
       if (this.activatedRoute.snapshot.paramMap.has('add')) {
           console.log('yeah');
-          this.fetchData();
       }
   }
 
   ngOnInit(): void {
-      this.fetchData();
+      this.fetchData(new Date());
   }
 
 
-fetchData() {
+fetchData(date: Date) {
     console.log('fetchData called');
-    this.viewDate = new Date();
+    this.viewDate = date;
+    console.log(date);
     this.params = {start_date: addHours(startOfDay(this.viewDate), 8).toISOString(), end_date: endOfDay(this.viewDate).toISOString()};
     this.events$ = this.service.getall(this.params)
         .pipe(map(( results: any ) => {
@@ -155,7 +154,14 @@ fetchData() {
                 });
             })
         );
+    this.refresh.next();
     // this.events$.subscribe(value => this.events = value);
+}
+
+fetchData2(date: { value: string }) {
+    const dates = date.value.split('/').map(x => parseInt(x, 10));
+    this.viewDate = new Date(dates[2], dates[1] - 1, dates[0]);
+    // this.fetchData(this.viewDate);
 }
 
   openDatePicker() {
@@ -164,10 +170,11 @@ fetchData() {
               mode: 'date',
               locale: 'fr_FR',
               format: 'dd/MM/yyyy',
-              date: this.viewDate.toDateString(),
-              theme: selectedTheme,
+              date: this.datepipe.transform(this.viewDate, 'dd/MM/yyyy'),
+              // date: '28/09/2020',
+              theme: 'selectedTheme',
           })
-          .then((date) => alert(date.value));
+          .then((date) => this.fetchData2(date)).finally(() => this.fetchData(this.viewDate));
   }
 
 
@@ -192,5 +199,9 @@ fetchData() {
     logout() {
         this.authService.logout();
         this.router.navigate(['login']);
+    }
+
+    dateChange(value: any) {
+      this.fetchData(new Date(value));
     }
 }

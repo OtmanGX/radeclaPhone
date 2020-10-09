@@ -5,12 +5,19 @@
     </ion-title>
     <ion-buttons slot="end">
 
-      <ion-button (click)="fetchData()">
+      <ion-button (click)="fetchData(viewDate)">
         <ion-icon name="refresh"></ion-icon>
       </ion-button>
-      <ion-button (click)="openDatePicker()">
-        <ion-icon name="calendar"></ion-icon>
-      </ion-button>
+
+              <ion-button (click)="picker.open()">
+                <ion-datetime #picker hidden pickerFormat="DD/MM/YYYY" (ionChange)="dateChange(picker.value)" doneText="Confirmer" cancelText="Annuler"
+                              [value]="datepipe.transform(today, 'dd/MM/yyyy')"></ion-datetime>
+                <ion-icon name="calendar"></ion-icon>
+              </ion-button>
+
+<!--      <ion-button (click)="openDatePicker()">-->
+<!--        <ion-icon name="calendar"></ion-icon>-->
+<!--      </ion-button>-->
       <ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </ion-button>
@@ -25,10 +32,13 @@
     </ion-toolbar>
   </ion-header>
 
+  <h2 class="ion-text-center">{{viewDate| date}}</h2>
+
   <div *ngIf="events$ | async; let events" style="margin-top: 10px;">
     <app-day-view-scheduler
             [viewDate]="viewDate"
             [events]="events"
+            [refresh]="refresh"
             [locale]="locale"
             [terrains]="terrains"
             [hourSegmentHeight]="25"
@@ -37,7 +47,6 @@
             (hourSegmentClicked)="hourSegmentClicked($event)"
             (userChanged)="userChanged($event)"
     >
-
     </app-day-view-scheduler>
   </div>
 <!--  <ion-list>-->

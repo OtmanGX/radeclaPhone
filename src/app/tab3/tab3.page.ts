@@ -24,7 +24,7 @@ export class Tab3Page implements OnInit {
 
   fetchData() {
     this.authService.getCurrentUser().subscribe(user => {
-      this.reservations$ = this.reservationService.getall({created_by: user.id});
+      this.reservations$ = this.reservationService.getall({created_by: user.id, limit: 10});
     });
   }
 

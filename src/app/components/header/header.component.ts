@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {IonRouterOutlet} from '@ionic/angular';
+import {AuthService} from '../../services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,8 +10,15 @@ import {IonRouterOutlet} from '@ionic/angular';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private routerOutlet: IonRouterOutlet) { }
+  constructor(private routerOutlet: IonRouterOutlet,
+              private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit() {}
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['login']);
+  }
 
 }

@@ -10,6 +10,7 @@ export class Membre {
   cotisation: any;
   licence_fideration: boolean;
   sexe: String;
+  profession: string;
   tel: string;
   mail: string;
 }
