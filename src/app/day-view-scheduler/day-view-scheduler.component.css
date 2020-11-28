@@ -46,15 +46,16 @@ cal-day-headers {
 }
 
 .cal-day-headers {
-  padding-left: 35px;
+  padding-left: 40px;
 }
 
 .cal-time-label-column {
-  width: 35px;
+  width: 40px;
 }
 
 mwl-calendar-week-view-hour-segment .cal-time {
-  max-width: 35px;
+  width: 40px;
+  max-width: 50px;
 }
 
 

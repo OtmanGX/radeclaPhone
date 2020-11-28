@@ -1,36 +1,56 @@
-<app-header></app-header>
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>
+      Radecla TCMT
+    </ion-title>
+    <ion-buttons slot="end">
+
+      <ion-button (click)="fetchData(viewDate)">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="picker.open()">
+        <ion-datetime #picker hidden pickerFormat="DD/MM/YYYY" (ionChange)="dateChange(picker.value)" doneText="Confirmer" cancelText="Annuler"
+                      [value]="datepipe.transform(today, 'MM/dd/yyyy')"></ion-datetime>
+        <ion-icon name="calendar"></ion-icon>
+      </ion-button>
+
+      <!--      <ion-button (click)="openDatePicker()">-->
+      <!--        <ion-icon name="calendar"></ion-icon>-->
+      <!--      </ion-button>-->
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Mes Réservations</ion-title>
+      <ion-title size="large">{{title}}</ion-title>
     </ion-toolbar>
   </ion-header>
-    <ion-list>
-      <ion-card *ngFor="let res of (reservations$ | async)">
-        <ion-card-header>
-          <ion-text color="medium">
-            <ion-icon name="calendar"></ion-icon>
-            {{res.start_date | date: 'short':'':'fr'}}
-          </ion-text>
-        </ion-card-header>
-        <ion-card-content>
 
-        <ion-label>
-          <ion-avatar style="display: inline; vertical-align: middle">
-          <ion-icon style="vertical-align: middle" name="tennisball" color="warning" size="large">
-          </ion-icon>
-        </ion-avatar>
-          <ion-text id="players">Contre: {{res.players[1].nom}}</ion-text>
-        </ion-label><br>
-          <ion-button class="ion-float-right" (click)="deleteReservation(res.id)" fill="clear" color="danger" size="small">
-            <ion-icon size="small" name="trash"></ion-icon>
-          </ion-button>
-          <ion-button class="ion-float-right" (click)="editReservation(res.id)" fill="clear" color="warning" size="small">
-            <ion-icon size="small" name="create"></ion-icon>
-          </ion-button>
-        </ion-card-content>
-      </ion-card>
-    </ion-list>
+  <h2 class="ion-text-center">{{viewDate| date}}</h2>
 
+  <ng-template #loading>
+    <!-- Default Spinner -->
+    <ion-spinner class="loading" color="primary" name="lines"></ion-spinner>
+  </ng-template>
+  <div *ngIf="events$ | async; else loading; let events" style="margin-top: 10px;">
+    <app-day-view-scheduler
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            [locale]="locale"
+            [terrains]="terrains"
+            [hourSegmentHeight]="30"
+            dayStartHour="8"
+            [hourSegments]="1"
+            (eventClicked)="handleEvent($event.event)"
+            (userChanged)="userChanged($event)"
+    >
+    </app-day-view-scheduler>
+  </div>
 </ion-content>

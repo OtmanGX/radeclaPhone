@@ -8,17 +8,21 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 
 import { Tab3PageRoutingModule } from './tab3-routing.module'
 import {ComponentsModule} from '../components.module';
+import {Tab2PageModule} from '../tab2/tab2.module';
+import {DayViewSchedulerComponent} from '../day-view-scheduler/day-view-scheduler.component';
+import {CalendarModule} from 'angular-calendar';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    ComponentsModule,
-    ExploreContainerComponentModule,
-    RouterModule.forChild([{ path: '', component: Tab3Page }]),
-    Tab3PageRoutingModule,
-  ],
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        ComponentsModule,
+        ExploreContainerComponentModule,
+        RouterModule.forChild([{path: '', component: Tab3Page}]),
+        Tab3PageRoutingModule,
+        Tab2PageModule,
+    ],
   declarations: [Tab3Page]
 })
 export class Tab3PageModule {}

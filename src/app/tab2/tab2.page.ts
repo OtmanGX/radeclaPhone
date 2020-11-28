@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { DatePickerPluginInterface } from '@capacitor-community/date-picker';
 import {Observable, Subject} from 'rxjs';
@@ -20,6 +20,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {APIService} from '../services/api.service';
 import {AuthService} from '../services/auth.service';
 import {DatePipe} from '@angular/common';
+import {TERRAINS} from '../utils';
+import {IonDatetime} from '@ionic/angular';
 
 
 const DatePicker: DatePickerPluginInterface = Plugins.DatePickerPlugin as any;
@@ -28,73 +30,6 @@ const selectedTheme = 'light';
 
 const TITLE = 'Agenda';
 
-const colors: any = {
-    red: {
-        primary: '#ad2121',
-        secondary: '#FAE3E3',
-    },
-    blue: {
-        primary: '#1e90ff',
-        secondary: '#D1E8FF',
-    },
-    yellow: {
-        primary: '#e3bc08',
-        secondary: '#FDF1BA',
-    },
-};
-
-const TERRAINS: Terrain[] = [
-    {
-        id: 0,
-        name: 'Terrain 1',
-        color: colors.blue,
-    },
-    {
-        id: 1,
-        name: 'Terrain 2',
-        color: colors.blue,
-    },
-    {
-        id: 2,
-        name: 'Terrain 3',
-        color: colors.blue,
-    },
-    {
-        id: 3,
-        name: 'Terrain 4',
-        color: colors.blue,
-    },
-    {
-        id: 4,
-        name: 'Terrain 5',
-        color: colors.blue,
-    },
-    {
-        id: 5,
-        name: 'Terrain 6',
-        color: colors.blue,
-    },
-    {
-        id: 6,
-        name: 'Terrain 7',
-        color: colors.blue,
-    },
-    // ,{
-    //   id: 7,
-    //   name: 'Terrain 8',
-    //   color: colors.blue,
-    // },
-    {
-        id: 8,
-        name: 'Terrain 9',
-        color: colors.blue,
-    },
-    {
-        id: 9,
-        name: 'Terrain 10',
-        color: colors.blue,
-    },
-];
 
 @Component({
   selector: 'app-tab2',
@@ -109,9 +44,11 @@ export class Tab2Page implements OnInit{
   title = TITLE;
   today = new Date();
   viewDate: Date = new Date();
+    customPickerOptions;
   private params: { end_date: string; start_date: string };
   events$: Observable<ReservationData[]>;
   events: CalendarEvent[] = [];
+  @ViewChild('picker') picker: IonDatetime;
 
   constructor(private service: ReservationService,
               private router: Router,
@@ -119,8 +56,26 @@ export class Tab2Page implements OnInit{
               private authService: AuthService,
               public datepipe: DatePipe) {
       if (this.activatedRoute.snapshot.paramMap.has('add')) {
-          console.log('yeah');
+          this.fetchData(new Date());
       }
+      this.customPickerOptions = {
+          buttons: [{
+              text: 'Aujourd\'hui',
+              handler: () => {
+                  this.picker.value = (new Date()).toDateString();
+              }
+          },{
+              text: 'Confirmer',
+              handler: (res) => {
+                  console.log('save');
+                  console.log(res);
+                  this.picker.value = (new Date(res.year.value, res.month.value - 1, res.day.value)).toDateString();
+              }
+          }, {
+              text: 'Annuler',
+              role: 'cancel'
+          }, ]
+      };
   }
 
   ngOnInit(): void {
@@ -131,7 +86,6 @@ export class Tab2Page implements OnInit{
 fetchData(date: Date) {
     console.log('fetchData called');
     this.viewDate = date;
-    console.log(date);
     this.params = {start_date: addHours(startOfDay(this.viewDate), 8).toISOString(), end_date: endOfDay(this.viewDate).toISOString()};
     this.events$ = this.service.getall(this.params)
         .pipe(map(( results: any ) => {
@@ -185,11 +139,9 @@ fetchData2(date: { value: string }) {
     }
 
     hourSegmentClicked(event) {
-      console.log(event);
       const date = event.date;
       const startDate = date;
       const terrain = this.terrains[event.col].id + 1;
-      console.log(terrain);
       const endDate = addHours(date, 1);
       if (isAfter(date, subMinutes(new Date(), 30))) {
             this.router.navigate(['newr', {startDate, endDate, terrain}]);

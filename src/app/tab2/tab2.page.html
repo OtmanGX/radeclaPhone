@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title>
-      Radecla
+      Radecla TCMT
     </ion-title>
     <ion-buttons slot="end">
 
@@ -10,8 +10,10 @@
       </ion-button>
 
               <ion-button (click)="picker.open()">
-                <ion-datetime #picker hidden pickerFormat="DD/MM/YYYY" (ionChange)="dateChange(picker.value)" doneText="Confirmer" cancelText="Annuler"
-                              [value]="datepipe.transform(today, 'dd/MM/yyyy')"></ion-datetime>
+                <ion-datetime #picker
+                              [pickerOptions]="customPickerOptions"
+                              hidden displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" (ionChange)="dateChange(picker.value)" doneText="Confirmer" cancelText="Annuler"
+                              [value]="datepipe.transform(today, 'MM/dd/yyyy')"></ion-datetime>
                 <ion-icon name="calendar"></ion-icon>
               </ion-button>
 
@@ -33,15 +35,18 @@
   </ion-header>
 
   <h2 class="ion-text-center">{{viewDate| date}}</h2>
-
-  <div *ngIf="events$ | async; let events" style="margin-top: 10px;">
+  <ng-template #loading>
+    <!-- Default Spinner -->
+    <ion-spinner class="loading" color="primary" name="lines"></ion-spinner>
+  </ng-template>
+  <div *ngIf="events$ | async; else loading ; let events" style="margin-top: 10px;">
     <app-day-view-scheduler
             [viewDate]="viewDate"
             [events]="events"
             [refresh]="refresh"
             [locale]="locale"
             [terrains]="terrains"
-            [hourSegmentHeight]="25"
+            [hourSegmentHeight]="30"
             dayStartHour="8"
             [hourSegments]="1"
             (hourSegmentClicked)="hourSegmentClicked($event)"

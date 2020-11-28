@@ -3,7 +3,7 @@
 <ion-content [fullscreen]="true">
 
   <ng-form #f="ngForm" (ngSubmit)="submit(f.value)" ngNativeValidate>
-    <ion-list>
+    <ion-list [ngSwitch]="typeMatch.value">
       <ion-list-header>
         <ion-label color="tertiary" >
           <h2 style="font-weight: bold">{{title}} Réservation</h2>
@@ -17,7 +17,7 @@
         </ion-select>
       </ion-item>
 
-      <ion-radio-group name="type_match" [(ngModel)]="reservation.type_match">
+      <ion-radio-group #typeMatch name="type_match" [(ngModel)]="reservation.type_match">
 
         <ion-item>
           <ion-label>Entrainement</ion-label>
@@ -28,37 +28,127 @@
           <ion-label>Match</ion-label>
           <ion-radio slot="start" value="M"></ion-radio>
         </ion-item>
+        <ion-item>
+          <ion-label>Défi</ion-label>
+          <ion-radio slot="start" value="D"></ion-radio>
+        </ion-item>
       </ion-radio-group>
+      <span *ngSwitchCase="'M'">
+        <ion-item >
+        <ion-label>
+          Double
+        </ion-label>
+        <ion-checkbox [checked]="reservation.players[2]" color="tertiary" #double></ion-checkbox>
+      </ion-item>
+        <ion-item *ngIf="double.checked">
+          <ion-text color="medium" style="text-decoration: underline">
+            Joueur 1 et 2 Contre 3 et 4
+          </ion-text>
+        </ion-item>
 
-      <ion-item>
-        <ion-label>L'autre joueur</ion-label>
+        <ion-item  *ngFor="let num of double.checked?[0,1,2,3]:[0,1]">
+        <ion-label>Joueur {{num+1}}</ion-label>
         <ionic-selectable
-                name="players"
-                [(ngModel)]="reservation.players"
+                [name]="'players'+num"
+                [(ngModel)]="reservation.players[num]"
                 required
-                item-content
                 [items]="membres"
                 closeButtonText="Annuler"
-                searchPlaceholder="Cherche"
+                searchPlaceholder="Chercher"
                 itemValueField="id"
                 itemTextField="nom"
+                [hasVirtualScroll]="true"
                 [canSearch]="true"
-                (onChange)="memberChange($event)"
-        >
+                (onChange)="memberChange($event)">
         </ionic-selectable>
       </ion-item>
+      </span>
+      <span *ngSwitchCase="'D'">
+        <ion-item >
+        <ion-label>
+          Double
+        </ion-label>
+        <ion-checkbox [checked]="reservation.players[2]" color="tertiary" #double></ion-checkbox>
+      </ion-item>
+        <ion-item *ngIf="double.checked">
+          <ion-text color="medium" style="text-decoration: underline">
+            Joueur 1 et 2 Contre 3 et 4
+          </ion-text>
+        </ion-item>
+
+        <ion-item  *ngFor="let num of double.checked?[0,1,2,3]:[0,1]">
+        <ion-label>Joueur {{num+1}}</ion-label>
+        <ionic-selectable
+                [name]="'players'+num"
+                [(ngModel)]="reservation.players[num]"
+                required
+                [items]="membres"
+                closeButtonText="Annuler"
+                searchPlaceholder="Chercher"
+                itemValueField="id"
+                itemTextField="nom"
+                [hasVirtualScroll]="true"
+                [canSearch]="true"
+                (onChange)="memberChange($event)">
+        </ionic-selectable>
+      </ion-item>
+      </span>
+
+      <span *ngSwitchCase="'E'">
+        <ion-item>
+          <ion-label>Joueur</ion-label>
+          <ionic-selectable
+                  [name]="'joueur'"
+                  [(ngModel)]="reservation.players[0]"
+                  required
+                  [items]="membres"
+                  closeButtonText="Annuler"
+                  searchPlaceholder="Chercher"
+                  itemValueField="id"
+                  itemTextField="nom"
+                  [hasVirtualScroll]="true"
+                  [canSearch]="true"
+                  (onChange)="memberChange($event)">
+          </ionic-selectable>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Entraineur</ion-label>
+        <ionic-selectable
+                [name]="'entraineur'"
+                [(ngModel)]="reservation.players[1]"
+                required
+                [items]="entraineurs"
+                closeButtonText="Annuler"
+                searchPlaceholder="Chercher"
+                itemValueField="id"
+                itemTextField="nom"
+                [hasVirtualScroll]="true"
+                [canSearch]="true"
+                (onChange)="memberChange($event)">
+        </ionic-selectable>
+  </ion-item>
+      </span>
+
 
     </ion-list>
 
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button *ngIf="!reservation.id; else edit">
-        <ion-icon name="add" (click)="f.valid && f.ngSubmit.emit()"></ion-icon>
+    <ion-fab [edge]="true" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button *ngIf="!reservation.id; else edit" (click)="f.valid && f.ngSubmit.emit()">
+<!--        <ion-icon name="add" (click)="f.valid && f.ngSubmit.emit()"></ion-icon>-->
+        Valider
       </ion-fab-button>
       <ng-template #edit>
         <ion-fab-button color="tertiary">
           <ion-icon name="checkmark" (click)="f.valid && f.ngSubmit.emit()"></ion-icon>
         </ion-fab-button>
       </ng-template>
+    </ion-fab>
+
+    <ion-fab [edge]="true" *ngIf="reservation.id" vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button color="danger">
+          <ion-icon name="trash" (click)="deleteReservation(reservation.id)"></ion-icon>
+        </ion-fab-button>
     </ion-fab>
 
   </ng-form>

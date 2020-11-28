@@ -10,7 +10,6 @@ import { Tab2PageRoutingModule } from './tab2-routing.module';
 import {ComponentsModule} from '../components.module';
 import {DayViewSchedulerComponent} from '../day-view-scheduler/day-view-scheduler.component';
 import {CalendarModule} from 'angular-calendar';
-
 @NgModule({
     imports: [
         IonicModule,
@@ -21,6 +20,6 @@ import {CalendarModule} from 'angular-calendar';
         Tab2PageRoutingModule,
         CalendarModule,
     ],
-    declarations: [Tab2Page, DayViewSchedulerComponent]
+    declarations: [Tab2Page]
 })
 export class Tab2PageModule {}

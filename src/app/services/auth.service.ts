@@ -73,11 +73,11 @@ export class AuthService {
         tap(user => {
           this.user$.next({id: user.id,
               username: user.username,
-              fullName: user.membre.nom,
-              tel: user.membre.tel,
-              mail: user.membre.mail,
-              membreId: user.membre.id,
-              dateNaissance: user.membre.date_naissance
+              fullName: user.membre?.nom,
+              // tel: user?.membre.tel,
+              // mail: user?.membre.mail,
+              // membreId: user?.membre.id,
+              // dateNaissance: user?.membre.date_naissance
           });
         })
       );

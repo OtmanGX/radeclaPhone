@@ -19,6 +19,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import {TokenInterceptor} from './services/token.interceptor';
 import {IonicSelectableModule} from 'ionic-selectable';
 import {FormsModule} from '@angular/forms';
+import {DayViewSchedulerComponent} from './day-view-scheduler/day-view-scheduler.component';
 
 registerLocaleData(localeFr);
 @NgModule({
@@ -35,7 +36,8 @@ registerLocaleData(localeFr);
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
-    IonicSelectableModule],
+    IonicSelectableModule,
+  ],
   providers: [
     StatusBar,
     SplashScreen,
